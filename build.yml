@@ -4,17 +4,25 @@
   connection: local
   become: yes
   tasks:
-    - name: Clone source code from github
+    - name: run git pull
       git:
         repo: "https://github.com/raulcs16/campus_lan.git"
-        dest: ./campus_lan
+        dest: ~/campus_lan
         version: main
+        force: yes
       register: git_status
 
-    - name: Import host ip
-      include_vars: vars/hostip
+    - name: Import host IP variables
+      include_vars:
+        file: vars/hostip
+        name: network_nodes # Nesting them makes looping easier
 
-    - name: update host file
+    - name: Update /etc/hosts with network device IPs
       blockinfile:
         path: /etc/hosts
+        marker: "# {mark} ANSIBLE MANAGED CAMPUS NODES"
+        block: |
+          {% for host, ip in network_nodes.items() %}
+          {{ ip }} {{ host }}
+          {% endfor %}
 ...
