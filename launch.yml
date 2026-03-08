@@ -1,0 +1,7 @@
+---
+- name: build cntrol node and provision ansible
+  import: build.yml
+
+- name: Set up IP Mapping in /etc/hosts file for server
+  import: set_host_ip_map.yml
+...
