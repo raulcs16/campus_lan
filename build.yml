@@ -1,0 +1,20 @@
+---
+- name: Build control enviroment
+  hosts: localhost
+  connection: local
+  become: yes
+  tasks:
+    - name: Clone source code from github
+      git:
+        repo: "https://github.com/raulcs16/campus_lan.git"
+        dest: ./campus_lan
+        version: main
+      register: git_status
+
+    - name: Import host ip
+      include_vars: vars/hostip
+
+    - name: update host file
+      blockinfile:
+        path: /etc/hosts
+...
