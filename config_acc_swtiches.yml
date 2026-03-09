@@ -1,0 +1,63 @@
+---
+- name: Provision Library Access Layer
+  hosts: accswitches
+  gather_facts: no
+
+  tasks:
+    - name: 1. Ensure All Library VLANs Exist
+      cisco.ios.ios_vlans:
+        config:
+          - vlan_id: "{{ item.id }}"
+            name: "{{ item.name }}"
+        state: merged
+      loop: "{{ campus_vlans }}"
+
+    - name: 2. Configure Standard Redundant Uplinks (Trunks)
+      cisco.ios.ios_l2_interfaces:
+        config:
+          - name: "{{ item.name }}"
+            description: "{{ item.description }}"
+            mode: trunk
+            trunk_native_vlan: 10 # Management lifeline
+        state: merged
+      loop: "{{ uplink_config }}"
+
+    - name: 3. Configure Local Access Ports (Staff, Lab, IoT)
+      cisco.ios.ios_l2_interfaces:
+        config:
+          - name: "{{ item.name }}"
+            description: "{{ item.desc }}"
+            mode: access
+            access:
+              vlan: "{{ item.vlan }}"
+        state: merged
+      loop: "{{ access_ports }}"
+      when: access_ports is defined
+
+    - name: 4. Enable STP Portfast & BPDU Guard on User Ports
+      cisco.ios.ios_config:
+        lines:
+          - description {{ item.desc }}
+          - switchport mode access
+          - switchport access vlan {{ item.vlan }}
+          - spanning-tree portfast
+          - spanning-tree bpduguard enable
+        parents: "interface {{ item.name }}"
+      loop: "{{ access_ports }}"
+      when: access_ports is defined
+
+    - name: 5. Configure WiFi Access Point Trunks
+      cisco.ios.ios_l2_interfaces:
+        config:
+          - name: "{{ item.name }}"
+            description: "{{ item.desc }}"
+            mode: trunk
+            trunk_native_vlan: "{{ item.native }}"
+            trunk_allowed_vlans: "{{ item.allowed }}"
+        state: merged
+      loop: "{{ ap_trunks }}"
+      when: ap_trunks is defined
+
+    - name: 6. Save Configuration to NVRAM
+      cisco.ios.ios_config:
+        save_when: always

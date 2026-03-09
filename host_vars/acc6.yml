@@ -1,0 +1,6 @@
+---
+# Mechanical Room - IoT & Security
+access_ports:
+  - { name: "Ethernet1/1", vlan: 50, desc: "BUILDING_HVAC_SENS" }
+  - { name: "Ethernet1/2", vlan: 50, desc: "SECURITY_CAM_01" }
+  - { name: "Ethernet1/3", vlan: 50, desc: "SMART_BOOK_DROP" }

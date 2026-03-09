@@ -1,0 +1,6 @@
+---
+# North Lab - Public Desktops
+access_ports:
+  - { name: "Ethernet1/1", vlan: 30, desc: "LAB_DESKTOP_N01" }
+  - { name: "Ethernet1/2", vlan: 30, desc: "LAB_DESKTOP_N02" }
+  - { name: "Ethernet1/3", vlan: 30, desc: "LAB_DESKTOP_N03" }

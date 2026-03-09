@@ -2,3 +2,44 @@ ansible_connection: network_cli
 ansible_network_os: cisco.ios.ios
 ansible_user: admin
 ansible_ssh_pass: cisco123
+
+campus_vlans:
+  - id: 10
+    name: "Management"
+    subnet: "172.16.10.0/24"
+    purpose: "Network Management"
+
+  - id: 20
+    name: "Staff_Internal"
+    subnet: 172.16.20.0/24
+    purpose: "Use by Staff personal workstations / laptops"
+
+  - id: 25
+    name: "Staff_Fixed"
+    subnet: "172.16.25.0/24"
+    purpose: "Registers, desk printers, kiosk etc"
+
+  - id: 30
+    name: "Public_Lab"
+    subnet: "172.16.30.0/24"
+    purpose: "Fixed library desktops/thin clients (Computer Lab)"
+
+  - id: 35
+    name: "Public_PlugIn"
+    subnet: "172.16.35.0/24"
+    purpose: "Wall jacks for patrons to plug in their own laptops"
+
+  - id: 40
+    name: "Patron_WiFi"
+    subnet: "172.16.40.0/24"
+    purpose: "Authenticated WiFi for library members"
+
+  - id: 45
+    name: "Guest_WiFi"
+    subnet: "172.16.45.0/24"
+    purpose: "Unauthenticated 'Free' WiFi (Rate-limited)"
+
+  - id: 50
+    name: "IOT_Building"
+    subnet: "172.16.50.0/24"
+    purpose: "Security, HVAC, and smart book-drop sensors"

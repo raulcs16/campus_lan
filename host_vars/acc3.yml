@@ -1,0 +1,6 @@
+---
+# South Lab - Public Desktops
+access_ports:
+  - { name: "Ethernet1/1", vlan: 30, desc: "LAB_DESKTOP_S01" }
+  - { name: "Ethernet1/2", vlan: 30, desc: "LAB_DESKTOP_S02" }
+  - { name: "Ethernet1/3", vlan: 30, desc: "LAB_DESKTOP_S03" }

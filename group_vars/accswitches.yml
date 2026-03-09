@@ -1,0 +1,11 @@
+uplink_config:
+  - name: Ethernet0/1
+    description: "Uplink to CD1"
+    mode: trunk
+  - name: Ethernet0/2
+    description: "Uplink to CD2"
+    mode: trunk
+
+global_stp_settings:
+  mode: rapid-pvst
+  bpdugaurd: enable

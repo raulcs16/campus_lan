@@ -1,0 +1,6 @@
+---
+# Admin Office - Staff Workstations
+access_ports:
+  - { name: "Ethernet1/1", vlan: 20, desc: "STAFF_PC_01" }
+  - { name: "Ethernet1/2", vlan: 20, desc: "STAFF_PC_02" }
+  - { name: "Ethernet1/3", vlan: 25, desc: "OFFICE_PRINTER" }
