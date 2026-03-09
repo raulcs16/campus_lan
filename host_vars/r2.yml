@@ -1,0 +1,2 @@
+p2p_neighbor_ip: 172.16.0.2 # Its own IP for e1/0
+p2p_mask: 255.255.255.252
