@@ -3,6 +3,10 @@
   hosts: cdswitches
   gather_facts: no
 
+  vars:
+    ansible_command_timeout: 60
+    ansible_connect_timeout: 60
+
   tasks:
     - name: 1. Global Setup (Routing and VLANs)
       cisco.ios.ios_config:
