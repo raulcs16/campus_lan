@@ -1,5 +1,5 @@
 ---
-- name: Provision Library Access Layer
+- name: Provision Library Access Layer (Bottom-Up)
   hosts: accswitches
   gather_facts: no
 
@@ -12,22 +12,14 @@
         state: merged
       loop: "{{ campus_vlans }}"
 
-    - name: 2a. Configure Uplink Descriptions
-      cisco.ios.ios_interfaces:
-        config:
-          - name: "{{ item.name }}"
-            description: "{{ item.description }}"
-        state: merged
-      loop: "{{ uplink_config }}"
-
-    - name: 2b. Configure Uplink Trunks
-      cisco.ios.ios_l2_interfaces:
-        config:
-          - name: "{{ item.name }}"
-            mode: trunk
-            trunk:
-              native_vlan: 10
-        state: merged
+    - name: 2. Force Trunk Encapsulation and Mode (Uplinks)
+      cisco.ios.ios_config:
+        lines:
+          - description {{ item.description }}
+          - switchport trunk encapsulation dot1q
+          - switchport mode trunk
+          - switchport trunk native vlan 10
+        parents: "interface {{ item.name }}"
       loop: "{{ uplink_config }}"
 
     - name: 3. Configure Local Access Ports
@@ -51,24 +43,15 @@
       loop: "{{ access_ports }}"
       when: access_ports is defined
 
-    - name: 5a. Configure WiFi AP Descriptions
-      cisco.ios.ios_interfaces:
-        config:
-          - name: "{{ item.name }}"
-            description: "{{ item.desc }}"
-        state: merged
-      loop: "{{ ap_trunks }}"
-      when: ap_trunks is defined
-
-    - name: 5b. Configure WiFi AP Trunking
-      cisco.ios.ios_l2_interfaces:
-        config:
-          - name: "{{ item.name }}"
-            mode: trunk
-            trunk:
-              native_vlan: "{{ item.native }}"
-              allowed_vlans: "{{ item.allowed }}"
-        state: merged
+    - name: 5. Configure WiFi AP Trunks (Force Encapsulation)
+      cisco.ios.ios_config:
+        lines:
+          - description {{ item.desc }}
+          - switchport trunk encapsulation dot1q
+          - switchport mode trunk
+          - switchport trunk native vlan {{ item.native }}
+          - switchport trunk allowed vlan {{ item.allowed }}
+        parents: "interface {{ item.name }}"
       loop: "{{ ap_trunks }}"
       when: ap_trunks is defined
 
