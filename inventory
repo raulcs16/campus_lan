@@ -15,8 +15,8 @@ acc4
 
 [all:vars]
 ansible_connection=network_cli
-ansible_network_os=ios        # Change to vyos, junos, etc. depending on your gear
-ansible_user=admin            # Your switch/router username
-ansible_ssh_pass=password     # Or use SSH keys (preferred)
+ansible_network_os=ios        
+ansible_user=admin            
+ansible_ssh_pass=cisco123    
 
 # END ANSIBLE MANAGED BLOCK

@@ -1,0 +1,17 @@
+---
+- name: Test SSH connection to IOS Device
+  gather_facts: no
+  hosts: routers
+  # connection: network_cli is usually defined in inventory, but fine here!
+
+  tasks:
+    - name: Run a show command
+      ios_command:
+        commands:
+          - show ip interface brief
+      register: output
+
+    - name: Print the output to console
+      debug:
+        var: output.stdout_lines
+...
