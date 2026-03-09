@@ -1,0 +1,60 @@
+---
+- name: Provision Distribution Layer (SVIs, HSRP, and Routed Ports)
+  hosts: cdswitches
+  gather_facts: no
+
+  tasks:
+    - name: 1. Global Setup (Routing and VLANs)
+      cisco.ios.ios_config:
+        lines: "ip routing"
+
+    - name: 2. Create VLAN Database
+      cisco.ios.ios_vlans:
+        config:
+          - vlan_id: "{{ item.id }}"
+            name: "{{ item.name }}"
+        state: merged
+      loop: "{{ campus_vlans }}"
+
+    - name: 3. Configure Downlink Trunks to Access Layer
+      cisco.ios.ios_config:
+        lines:
+          - description {{ item.desc }}
+          - switchport trunk encapsulation dot1q
+          - switchport mode trunk
+        parents: "interface {{ item.name }}"
+      loop: "{{ downlink_ports }}"
+
+    - name: 4. Configure Layer 3 Router-Facing Ports
+      cisco.ios.ios_config:
+        lines:
+          - description {{ item.desc }}
+          - no switchport
+          - ip address {{ item.ip }} {{ item.mask }}
+          - no shutdown
+        parents: "interface {{ item.name }}"
+      loop: "{{ router_links }}"
+      when: router_links is defined
+
+    - name: 5. Configure SVIs and HSRP Gateways
+      cisco.ios.ios_config:
+        lines:
+          - ip address {{ item.ip }} {{ item.mask }}
+          - standby {{ item.id }} ip {{ hsrp_vips[item.id] }}
+          - standby {{ item.id }} priority {{ hsrp_priority }}
+          - standby {{ item.id }} preempt
+          - no shutdown
+        parents: "interface Vlan{{ item.id }}"
+      loop: "{{ vlan_interfaces }}"
+
+    - name: 6. Configure Peer Link between CDs
+      cisco.ios.ios_config:
+        lines:
+          - description "BACKBONE_TO_PEER"
+          - switchport trunk encapsulation dot1q
+          - switchport mode trunk
+        parents: "interface {{ peer_link }}"
+
+    - name: 7. Save to NVRAM
+      cisco.ios.ios_config:
+        save_when: always

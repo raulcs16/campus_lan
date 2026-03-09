@@ -1,0 +1,18 @@
+downlink_ports:
+  - { name: "Ethernet1/3", des:"TO_ACC1" }
+  - { name: "Ethernet2/0", des:"TO_ACC2" }
+  - { name: "Ethernet2/1", des:"TO_ACC3" }
+  - { name: "Ethernet2/2", des:"TO_ACC4" }
+  - { name: "Ethernet2/3", des:"TO_ACC5" }
+  - { name: "Ethernet3/0", des:"TO_ACC6" }
+
+peer_link: "Ethernet1/0"
+
+hsrp_vips:
+  20: "172.16.20.254"
+  25: "172.16.25.254"
+  30: "172.16.30.254"
+  35: "172.16.35.254"
+  40: "172.16.40.254"
+  45: "172.16.45.254"
+  50: "172.16.50.254"
