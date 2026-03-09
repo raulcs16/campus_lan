@@ -12,21 +12,28 @@
         state: merged
       loop: "{{ campus_vlans }}"
 
-    - name: 2. Configure Standard Redundant Uplinks (Trunks)
-      cisco.ios.ios_l2_interfaces:
+    - name: 2a. Configure Uplink Descriptions
+      cisco.ios.ios_interfaces:
         config:
           - name: "{{ item.name }}"
             description: "{{ item.description }}"
-            mode: trunk
-            trunk_native_vlan: 10 # Management lifeline
         state: merged
       loop: "{{ uplink_config }}"
 
-    - name: 3. Configure Local Access Ports (Staff, Lab, IoT)
+    - name: 2b. Configure Uplink Trunks
       cisco.ios.ios_l2_interfaces:
         config:
           - name: "{{ item.name }}"
-            description: "{{ item.desc }}"
+            mode: trunk
+            trunk:
+              native_vlan: 10
+        state: merged
+      loop: "{{ uplink_config }}"
+
+    - name: 3. Configure Local Access Ports
+      cisco.ios.ios_l2_interfaces:
+        config:
+          - name: "{{ item.name }}"
             mode: access
             access:
               vlan: "{{ item.vlan }}"
@@ -34,26 +41,33 @@
       loop: "{{ access_ports }}"
       when: access_ports is defined
 
-    - name: 4. Enable STP Portfast & BPDU Guard on User Ports
+    - name: 4. Apply Port Security & STP Features
       cisco.ios.ios_config:
         lines:
           - description {{ item.desc }}
-          - switchport mode access
-          - switchport access vlan {{ item.vlan }}
           - spanning-tree portfast
           - spanning-tree bpduguard enable
         parents: "interface {{ item.name }}"
       loop: "{{ access_ports }}"
       when: access_ports is defined
 
-    - name: 5. Configure WiFi Access Point Trunks
-      cisco.ios.ios_l2_interfaces:
+    - name: 5a. Configure WiFi AP Descriptions
+      cisco.ios.ios_interfaces:
         config:
           - name: "{{ item.name }}"
             description: "{{ item.desc }}"
+        state: merged
+      loop: "{{ ap_trunks }}"
+      when: ap_trunks is defined
+
+    - name: 5b. Configure WiFi AP Trunking
+      cisco.ios.ios_l2_interfaces:
+        config:
+          - name: "{{ item.name }}"
             mode: trunk
-            trunk_native_vlan: "{{ item.native }}"
-            trunk_allowed_vlans: "{{ item.allowed }}"
+            trunk:
+              native_vlan: "{{ item.native }}"
+              allowed_vlans: "{{ item.allowed }}"
         state: merged
       loop: "{{ ap_trunks }}"
       when: ap_trunks is defined
@@ -61,3 +75,4 @@
     - name: 6. Save Configuration to NVRAM
       cisco.ios.ios_config:
         save_when: always
+...
