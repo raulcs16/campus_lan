@@ -12,17 +12,14 @@
         force: yes
       register: git_status
 
-    - name: Import host IP variables
-      include_vars:
-        file: vars/hostip
-        name: network_nodes # Nesting them makes looping easier
-
-    - name: Update /etc/hosts with network device IPs
+    - name: Update /etc/hosts with network device IPs from inventory
       blockinfile:
         path: /etc/hosts
         marker: "# {mark} ANSIBLE MANAGED CAMPUS NODES"
         block: |
-          {% for host, ip in network_nodes.items() %}
-          {{ ip }} {{ host }}
+          {% for host in groups['all'] %}
+          {% if hostvars[host]['ansible_host'] is defined %}
+          {{ hostvars[host]['ansible_host'] }} {{ host }}
+          {% endif %}
           {% endfor %}
 ...

@@ -1,22 +1,15 @@
-# BEGIN ANSIBLE MANAGED BLOCK
 [routers]
-r1
-r2
+r1 ansible_host=172.16.10.1
+r2 ansible_host=172.16.10.2
 
 [cdswitches]
-cd1
-cd2
+cd1 ansible_host=172.16.10.11
+cd2 ansible_host=172.16.10.12
 
 [accswitches]
-acc1
-acc2
-acc3
-acc4
-
-[all:vars]
-ansible_connection=network_cli
-ansible_network_os=ios        
-ansible_user=admin            
-ansible_ssh_pass=cisco123    
-
-# END ANSIBLE MANAGED BLOCK
+acc1 ansible_host=172.16.10.21
+acc2 ansible_host=172.16.10.22
+acc3 ansible_host=172.16.10.23
+acc4 ansible_host=172.16.10.24
+acc5 ansible_host=172.16.10.25
+acc6 ansible_host=172.16.10.26
