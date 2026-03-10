@@ -43,3 +43,12 @@ campus_vlans:
     name: "IOT_Building"
     subnet: "172.16.50.0/24"
     purpose: "Security, HVAC, and smart book-drop sensors"
+
+hsrp_vips:
+  20: "172.16.20.254"
+  25: "172.16.25.254"
+  30: "172.16.30.254"
+  35: "172.16.35.254"
+  40: "172.16.40.254"
+  45: "172.16.45.254"
+  50: "172.16.50.254"
