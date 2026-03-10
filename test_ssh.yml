@@ -1,7 +1,7 @@
 ---
 - name: Test SSH connection to IOS Device
   gather_facts: no
-  hosts: routers
+  hosts: accswitches
   # connection: network_cli is usually defined in inventory, but fine here!
 
   tasks:
