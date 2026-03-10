@@ -2,6 +2,7 @@
 - name: Configure Router Infrastructure Links
   hosts: routers
   gather_facts: no
+
   tasks:
     - name: Enable WAN Interface (DHCP)
       cisco.ios.ios_interfaces:
@@ -23,7 +24,8 @@
           - name: Ethernet1/0
             ipv4:
               - address: "{{ p2p_neighbor_ip }} {{ p2p_mask }}"
-              - name: Ensure Trunk Interface is Up (e0/1)
+
+    - name: Ensure Trunk Interface is Up (e0/1)
       cisco.ios.ios_interfaces:
         config:
           - name: Ethernet0/1
