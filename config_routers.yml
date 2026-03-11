@@ -25,25 +25,43 @@
             ipv4:
               - address: "{{ p2p_neighbor_ip }} {{ p2p_mask }}"
 
-    - name: Ensure Trunk Interface is Up (e0/1)
-      cisco.ios.ios_interfaces:
+    - name: Configure EtherChannel Bundles (LACP)
+      cisco.ios.ios_lag_interfaces:
         config:
-          - name: Ethernet0/1
-            description: "TRUNK_TO_CD_SWITCHES"
-            enabled: yes
+          - name: Port-channel10
+            members:
+              - name: Ethernet0/1
+              - name: Ethernet0/2
+            mode: active
+          - name: Port-channel20
+            members:
+              - name: Ethernet1/1
+              - name: Ethernet1/2
+            mode: active
 
-    - name: Configure VLAN Sub-interfaces and HSRP
-      cisco.ios.ios_config:
-        lines:
-          # Native for VLAN 10, tagged for others
-          - "encapsulation dot1Q {{ item.id }}{{ ' native' if item.id == 10 else '' }}"
-          - "ip address {{ item.ip }} {{ item.mask }}"
-          # HSRP: VIP is pulled from group_vars/all.yml or cdswitches.yml
-          - "standby {{ item.id }} ip {{ hsrp_vips[item.id] }}"
-          - "standby {{ item.id }} priority {{ hsrp_priority }}"
-          - "standby {{ item.id }} preempt"
-        parents: "interface Ethernet0/1.{{ item.id }}"
-      loop: "{{ router_subinterfaces }}"
+    - name: Assign IPs to Port-Channels
+      cisco.ios.ios_l3_interfaces:
+        config:
+          - name: Port-channel10
+            ipv4:
+              - address: "{{ pc10_ip }} 255.255.255.252"
+          - name: Port-channel20
+            ipv4:
+              - address: "{{ pc20_ip }} 255.255.255.252"
+
+    - name: Configure OSPF Routing
+      cisco.ios.ios_ospf_interfaces:
+        config:
+          - name: Port-channel10
+            address_family:
+              - AFI: ipv4
+                process_id: "{{ ospf_process_id }}"
+                area: 0
+          - name: Port-channel20
+            address_family:
+              - AFI: ipv4
+                process_id: "{{ ospf_process_id }}"
+                area: 0
 
     - name: Save Configuration
       cisco.ios.ios_command:

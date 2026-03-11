@@ -1,15 +1,8 @@
-p2p_neighbor_ip: 172.16.0.2
+p2p_neighbor_ip: 172.16.0.2 # Link to R1
 p2p_mask: 255.255.255.252
 
-hsrp_priority: 100
+# Port-Channel IPs
+pc10_ip: 172.16.0.13 # Subnet 172.16.0.12/30 (Link to CD2)
+pc20_ip: 172.16.0.17 # Subnet 172.16.0.16/30 (Link to CD1)
 
-# LAN Sub-interfaces (The Standby Gateways)
-router_subinterfaces:
-  - { id: 10, ip: "172.16.10.253", mask: "255.255.255.0" }
-  - { id: 20, ip: "172.16.20.253", mask: "255.255.255.0" }
-  - { id: 25, ip: "172.16.25.253", mask: "255.255.255.0" }
-  - { id: 30, ip: "172.16.30.253", mask: "255.255.255.0" }
-  - { id: 35, ip: "172.16.35.253", mask: "255.255.255.0" }
-  - { id: 40, ip: "172.16.40.253", mask: "255.255.255.0" }
-  - { id: 45, ip: "172.16.45.253", mask: "255.255.255.0" }
-  - { id: 50, ip: "172.16.50.253", mask: "255.255.255.0" }
+ospf_process_id: 1

@@ -1,13 +1,11 @@
-p2p_neighbor_ip: 172.16.0.1
+# Link to R2 (e1/0)
+p2p_r2_ip: 172.16.0.1
 p2p_mask: 255.255.255.252
 
-# LAN Sub-interfaces (The Gateways for the library)
-router_subinterfaces:
-  - { id: 10, ip: "172.16.10.252", mask: "255.255.255.0" }
-  - { id: 20, ip: "172.16.20.252", mask: "255.255.255.0" }
-  - { id: 25, ip: "172.16.25.252", mask: "255.255.255.0" }
-  - { id: 30, ip: "172.16.30.252", mask: "255.255.255.0" }
-  - { id: 35, ip: "172.16.35.252", mask: "255.255.255.0" }
-  - { id: 40, ip: "172.16.40.252", mask: "255.255.255.0" }
-  - { id: 45, ip: "172.16.45.252", mask: "255.255.255.0" }
-  - { id: 50, ip: "172.16.50.252", mask: "255.255.255.0" }
+# Link to CD1 (Port-channel 10)
+pc10_ip: 172.16.0.5
+# Link to CD2 (Port-channel 20)
+pc20_ip: 172.16.0.9
+
+ospf_process_id: 1
+router_id: 1.1.1.1
