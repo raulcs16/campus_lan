@@ -19,28 +19,24 @@
           - no shutdown
         parents: interface Ethernet1/0
 
-    - name: Create and Configure Port-Channels (L3)
+    - name: Configure Downlinks to CD Switches
       cisco.ios.ios_config:
         lines:
-          - interface Port-channel10
-          - description LINK_TO_CD1
-          - no switchport
-          - ip address {{ pc10_ip }} 255.255.255.252
+          - interface Ethernet0/1
+          - description TO_CD1_Link1
+          - ip address {{ r1_cd1_eth0_1_ip }} 255.255.255.252
           - no shutdown
-          - interface Port-channel20
-          - description LINK_TO_CD2
-          - no switchport
-          - ip address {{ pc20_ip }} 255.255.255.252
+          - interface Ethernet0/2
+          - description TO_CD1_Link2
+          - ip address {{ r1_cd1_eth0_2_ip }} 255.255.255.252
           - no shutdown
-
-    - name: Bind Physical Interfaces to Port-Channels
-      cisco.ios.ios_config:
-        lines:
-          - interface range Ethernet0/1 - 2
-          - channel-group 10 mode active
+          - interface Ethernet1/1
+          - description TO_CD2_Link1
+          - ip address {{ r1_cd2_eth1_1_ip }} 255.255.255.252
           - no shutdown
-          - interface range Ethernet1/1 - 2
-          - channel-group 20 mode active
+          - interface Ethernet1/2
+          - description TO_CD2_Link2
+          - ip address {{ r1_cd2_eth1_2_ip }} 255.255.255.252
           - no shutdown
 
     - name: Configure OSPF Routing
@@ -48,12 +44,7 @@
         lines:
           - router ospf {{ ospf_process_id }}
           - router-id {{ router_id }}
-          - log-adjacency-changes
-          - network {{ pc10_ip }} 0.0.0.0 area 0
-          - network {{ pc20_ip }} 0.0.0.0 area 0
-          - network {{ p2p_neighbor_ip }} 0.0.0.0 area 0
-          # Optional: advertise the WAN DHCP subnet if needed
-          - passive-interface Ethernet1/3
+          - network 172.16.0.0 0.0.255.255 area 0
 
     - name: Save Configuration
       cisco.ios.ios_command:

@@ -1,8 +1,19 @@
-p2p_neighbor_ip: 172.16.0.2 # Link to R1
+# Link to R1 (e1/0)
+# R1 is 172.16.0.1, R2 is 172.16.0.2
+p2p_neighbor_ip: 172.16.0.2
 p2p_mask: 255.255.255.252
 
-# Port-Channel IPs
-pc10_ip: 172.16.0.13 # Subnet 172.16.0.12/30 (Link to CD2)
-pc20_ip: 172.16.0.17 # Subnet 172.16.0.16/30 (Link to CD1)
+# Subnet 172.16.2.0/30
+r2_cd1_eth1_1_ip: 172.16.2.1
+# Subnet 172.16.2.4/30
+r2_cd1_eth1_2_ip: 172.16.2.5
 
+# Links to CD2 (Using new subnets)
+# Subnet 172.16.2.8/30
+r2_cd2_eth0_1_ip: 172.16.2.9
+# Subnet 172.16.2.12/30
+r2_cd2_eth0_2_ip: 172.16.2.13
+
+# OSPF Configuration
 ospf_process_id: 1
+router_id: 2.2.2.2
