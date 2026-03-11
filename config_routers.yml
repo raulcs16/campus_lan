@@ -41,6 +41,14 @@
               - member: Ethernet1/2
                 mode: active
 
+    - name: Ensure Port-channel Interfaces Exist
+      cisco.ios.ios_interfaces:
+        config:
+          - name: Port-channel10
+            enabled: yes
+          - name: Port-channel20
+            enabled: yes
+
     - name: Assign IPs to Port-Channels
       cisco.ios.ios_l3_interfaces:
         config:
