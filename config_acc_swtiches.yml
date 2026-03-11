@@ -4,58 +4,33 @@
   gather_facts: no
 
   tasks:
-    - name: 1. Ensure All Library VLANs Exist
+    - name: Configure Global STP and VTP
+      cisco.ios.ios_config:
+        lines:
+          - spanning-tree mode {{ global_stp_settings.mode }}
+          - spanning-tree portfast bpduguard default
+          - vtp mode transparent
+          - spanning-tree extend system-id
+
+    - name: Create VLANs
       cisco.ios.ios_vlans:
         config:
-          - vlan_id: "{{ item.id }}"
-            name: "{{ item.name }}"
-        state: merged
+          - name: "{{ item.name }}"
+            vlan_id: "{{ item.id }}"
       loop: "{{ campus_vlans }}"
 
-    - name: 2. Force Trunk Encapsulation and Mode (Uplinks)
+    - name: Configure Uplink Trunks to CD Switches
       cisco.ios.ios_config:
         lines:
           - description {{ item.description }}
           - switchport trunk encapsulation dot1q
-          - switchport mode trunk
-          - switchport trunk native vlan 10
+          - switchport mode {{ item.mode }}
+          - switchport trunk allowed vlan all
+          - no shutdown
         parents: "interface {{ item.name }}"
       loop: "{{ uplink_config }}"
 
-    - name: 3. Configure Local Access Ports
-      cisco.ios.ios_l2_interfaces:
-        config:
-          - name: "{{ item.name }}"
-            mode: access
-            access:
-              vlan: "{{ item.vlan }}"
-        state: merged
-      loop: "{{ access_ports }}"
-      when: access_ports is defined
-
-    - name: 4. Apply Port Security & STP Features
-      cisco.ios.ios_config:
-        lines:
-          - description {{ item.desc }}
-          - spanning-tree portfast
-          - spanning-tree bpduguard enable
-        parents: "interface {{ item.name }}"
-      loop: "{{ access_ports }}"
-      when: access_ports is defined
-
-    - name: 5. Configure WiFi AP Trunks (Force Encapsulation)
-      cisco.ios.ios_config:
-        lines:
-          - description {{ item.desc }}
-          - switchport trunk encapsulation dot1q
-          - switchport mode trunk
-          - switchport trunk native vlan {{ item.native }}
-          - switchport trunk allowed vlan {{ item.allowed }}
-        parents: "interface {{ item.name }}"
-      loop: "{{ ap_trunks }}"
-      when: ap_trunks is defined
-
-    - name: 6. Save Configuration to NVRAM
+    - name: Save Configuration to NVRAM
       cisco.ios.ios_config:
         save_when: always
 ...
