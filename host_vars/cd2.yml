@@ -1,41 +1,13 @@
----
-ansible_host: 172.16.10.12
+# Links to R1 (Matching R1's 172.16.1.x)
+r1_l1_ip: 172.16.1.10
+r1_l2_ip: 172.16.1.14
 
-hsrp_priority: 100
+# Links to R2 (Matching R2's 172.16.2.x)
+r2_l1_ip: 172.16.2.10
+r2_l2_ip: 172.16.2.14
 
-vlan_interfaces:
-  - { id: 20, ip: "172.16.20.2", mask: "255.255.255.0" }
-  - { id: 25, ip: "172.16.25.2", mask: "255.255.255.0" }
-  - { id: 30, ip: "172.16.30.2", mask: "255.255.255.0" }
-  - { id: 35, ip: "172.16.35.2", mask: "255.255.255.0" }
-  - { id: 40, ip: "172.16.40.2", mask: "255.255.255.0" }
-  - { id: 45, ip: "172.16.45.2", mask: "255.255.255.0" }
-  - { id: 50, ip: "172.16.50.2", mask: "255.255.255.0" }
-
-router_links:
-  # Links to R2 (Subnets .216 and .220)
-  - {
-      name: "Ethernet0/1",
-      ip: "172.16.0.217",
-      mask: "255.255.255.252",
-      desc: "TO_R2_e0/1",
-    }
-  - {
-      name: "Ethernet0/2",
-      ip: "172.16.0.221",
-      mask: "255.255.255.252",
-      desc: "TO_R2_e0/2",
-    }
-  # Links to R1 (Subnets .224 and .228)
-  - {
-      name: "Ethernet1/1",
-      ip: "172.16.0.225",
-      mask: "255.255.255.252",
-      desc: "TO_R1_e1/1",
-    }
-  - {
-      name: "Ethernet1/2",
-      ip: "172.16.0.229",
-      mask: "255.255.255.252",
-      desc: "TO_R1_e1/2",
-    }
+# HSRP / SVI Vars
+hsrp_priority: 100 # CD2 as Secondary
+hsrp_offset: 3 # SVI will be .3
+ospf_process_id: 1
+router_id: 10.10.10.2

@@ -1,38 +1,58 @@
 ---
-- name: Configure CD Switches as L2 Aggregators (RoaS Support)
+- name: Configure Distribution Switches (Layer 3)
   hosts: cdswitches
   gather_facts: no
 
   tasks:
-    - name: 1. Ensure VLANs Exist
+    - name: Enable Global Routing
+      cisco.ios.ios_config:
+        lines: ip routing
+
+    - name: Create VLANs
       cisco.ios.ios_vlans:
         config:
-          - vlan_id: "{{ item.id }}"
-            name: "{{ item.name }}"
-        state: merged
+          - name: "{{ item.name }}"
+            vlan_id: "{{ item.id }}"
       loop: "{{ campus_vlans }}"
 
-    - name: 2. Configure Downlink Trunks (To Access)
+    - name: Configure L3 Uplinks to Routers
       cisco.ios.ios_config:
         lines:
-          - description {{ item.desc }}
-          - switchport trunk encapsulation dot1q
-          - switchport mode trunk
-          - switchport trunk native vlan 10
-        parents: "interface {{ item.name }}"
-      loop: "{{ downlink_ports }}"
+          - no switchport
+          - description "{{ item.desc }}"
+          - ip address {{ item.ip }} 255.255.255.252
+          - no shutdown
+        parents: "interface {{ item.int }}"
+      loop:
+        - { int: "Ethernet0/1", desc: "TO_R1_L1", ip: "{{ r1_l1_ip }}" }
+        - { int: "Ethernet0/2", desc: "TO_R1_L2", ip: "{{ r1_l2_ip }}" }
+        - { int: "Ethernet1/1", desc: "TO_R2_L1", ip: "{{ r2_l1_ip }}" }
+        - { int: "Ethernet1/2", desc: "TO_R2_L2", ip: "{{ r2_l2_ip }}" }
 
-    - name: 3. Configure Uplink Trunks (To Routers)
-      # These ports (e0/1, e0/2, e1/1, e1/2) are now TRUNKS, not routed ports
+    - name: Configure SVIs and HSRP
       cisco.ios.ios_config:
         lines:
-          - description "UPLINK_TO_ROUTER"
-          - switchport trunk encapsulation dot1q
-          - switchport mode trunk
-          - switchport trunk native vlan 10
-        parents: "interface {{ item.name }}"
-      loop: "{{ router_links }}"
+          - ip address {{ item.subnet | ipaddr('network') | ipaddr(hsrp_offset) }} 255.255.255.0
+          - standby {{ item.id }} ip {{ item.subnet | ipaddr('network') | ipaddr(1) }}
+          - standby {{ item.id }} priority {{ hsrp_priority }}
+          - standby {{ item.id }} preempt
+        parents: "interface Vlan{{ item.id }}"
+      loop: "{{ campus_vlans }}"
+      when: item.id != 10 # Management usually has a static IP, no HSRP
 
-    - name: 4. Final Save
+    - name: Configure OSPF
+      cisco.ios.ios_config:
+        lines:
+          - router ospf {{ ospf_process_id }}
+          - router-id {{ router_id }}
+          - network 172.16.0.0 0.0.255.255 area 0
+          # This advertises all the user VLANs to the routers:
+          - passive-interface default
+          - no passive-interface Ethernet0/1
+          - no passive-interface Ethernet0/2
+          - no passive-interface Ethernet1/1
+          - no passive-interface Ethernet1/2
+
+    - name: Save Configuration
       cisco.ios.ios_command:
         commands: write memory
