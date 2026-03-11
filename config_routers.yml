@@ -30,15 +30,15 @@
         config:
           - name: Port-channel10
             members:
-              - name: Ethernet0/1
+              - member: Ethernet0/1
                 mode: active
-              - name: Ethernet0/2
+              - member: Ethernet0/2
                 mode: active
           - name: Port-channel20
             members:
-              - name: Ethernet1/1
+              - member: Ethernet1/1
                 mode: active
-              - name: Ethernet1/2
+              - member: Ethernet1/2
                 mode: active
 
     - name: Assign IPs to Port-Channels
