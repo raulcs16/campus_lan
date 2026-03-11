@@ -4,74 +4,56 @@
   gather_facts: no
 
   tasks:
-    - name: Enable WAN Interface (DHCP)
-      cisco.ios.ios_interfaces:
-        config:
-          - name: Ethernet1/3
-            description: "WAN_CONNECTION"
-            enabled: yes
-
-    - name: Set WAN to DHCP
-      cisco.ios.ios_l3_interfaces:
-        config:
-          - name: Ethernet1/3
-            ipv4:
-              - address: dhcp
+    - name: Configure WAN and Router-to-Router P2P
+      cisco.ios.ios_config:
+        lines:
+          - description WAN_CONNECTION
+          - ip address dhcp
+          - no shutdown
+        parents: interface Ethernet1/3
 
     - name: Configure P2P Link between R1 and R2
-      cisco.ios.ios_l3_interfaces:
-        config:
-          - name: Ethernet1/0
-            ipv4:
-              - address: "{{ p2p_neighbor_ip }} {{ p2p_mask }}"
+      cisco.ios.ios_config:
+        lines:
+          - ip address {{ p2p_neighbor_ip }} {{ p2p_mask }}
+          - no shutdown
+        parents: interface Ethernet1/0
 
-    - name: Configure EtherChannel Bundles (LACP)
-      cisco.ios.ios_lag_interfaces:
-        config:
-          - name: Port-channel10
-            members:
-              - member: Ethernet0/1
-                mode: active
-              - member: Ethernet0/2
-                mode: active
-          - name: Port-channel20
-            members:
-              - member: Ethernet1/1
-                mode: active
-              - member: Ethernet1/2
-                mode: active
+    - name: Create and Configure Port-Channels (L3)
+      cisco.ios.ios_config:
+        lines:
+          - interface Port-channel10
+          - description LINK_TO_CD1
+          - no switchport
+          - ip address {{ pc10_ip }} 255.255.255.252
+          - no shutdown
+          - interface Port-channel20
+          - description LINK_TO_CD2
+          - no switchport
+          - ip address {{ pc20_ip }} 255.255.255.252
+          - no shutdown
 
-    - name: Ensure Port-channel Interfaces Exist
-      cisco.ios.ios_interfaces:
-        config:
-          - name: Port-channel10
-            enabled: yes
-          - name: Port-channel20
-            enabled: yes
-
-    - name: Assign IPs to Port-Channels
-      cisco.ios.ios_l3_interfaces:
-        config:
-          - name: Port-channel10
-            ipv4:
-              - address: "{{ pc10_ip }} 255.255.255.252"
-          - name: Port-channel20
-            ipv4:
-              - address: "{{ pc20_ip }} 255.255.255.252"
+    - name: Bind Physical Interfaces to Port-Channels
+      cisco.ios.ios_config:
+        lines:
+          - interface range Ethernet0/1 - 2
+          - channel-group 10 mode active
+          - no shutdown
+          - interface range Ethernet1/1 - 2
+          - channel-group 20 mode active
+          - no shutdown
 
     - name: Configure OSPF Routing
-      cisco.ios.ios_ospf_interfaces:
-        config:
-          - name: Port-channel10
-            address_family:
-              - AFI: ipv4
-                process_id: "{{ ospf_process_id }}"
-                area: 0
-          - name: Port-channel20
-            address_family:
-              - AFI: ipv4
-                process_id: "{{ ospf_process_id }}"
-                area: 0
+      cisco.ios.ios_config:
+        lines:
+          - router ospf {{ ospf_process_id }}
+          - router-id {{ router_id }}
+          - log-adjacency-changes
+          - network {{ pc10_ip }} 0.0.0.0 area 0
+          - network {{ pc20_ip }} 0.0.0.0 area 0
+          - network {{ p2p_neighbor_ip }} 0.0.0.0 area 0
+          # Optional: advertise the WAN DHCP subnet if needed
+          - passive-interface Ethernet1/3
 
     - name: Save Configuration
       cisco.ios.ios_command:
