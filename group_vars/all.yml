@@ -4,42 +4,51 @@ ansible_user: admin
 ansible_ssh_pass: cisco123
 
 campus_vlans:
-  - id: 10
-    name: "Management"
-    subnet: "172.16.10.0/24"
-    purpose: "Network Management"
-
   - id: 20
     name: "Staff_Internal"
-    subnet: 172.16.20.0/24
-    purpose: "Use by Staff personal workstations / laptops"
+    subnet: "172.16.20.0/24"
+    vip: "172.16.20.1"
+    cd1_ip: "172.16.20.2"
+    cd2_ip: "172.16.20.3"
 
   - id: 25
     name: "Staff_Fixed"
     subnet: "172.16.25.0/24"
-    purpose: "Registers, desk printers, kiosk etc"
+    vip: "172.16.25.1"
+    cd1_ip: "172.16.25.2"
+    cd2_ip: "172.16.25.3"
 
   - id: 30
     name: "Public_Lab"
     subnet: "172.16.30.0/24"
-    purpose: "Fixed library desktops/thin clients (Computer Lab)"
+    vip: "172.16.30.1"
+    cd1_ip: "172.16.30.2"
+    cd2_ip: "172.16.30.3"
 
   - id: 35
     name: "Public_PlugIn"
     subnet: "172.16.35.0/24"
-    purpose: "Wall jacks for patrons to plug in their own laptops"
+    vip: "172.16.35.1"
+    cd1_ip: "172.16.35.2"
+    cd2_ip: "172.16.35.3"
 
   - id: 40
     name: "Patron_WiFi"
     subnet: "172.16.40.0/24"
-    purpose: "Authenticated WiFi for library members"
+    vip: "172.16.40.1"
+    cd1_ip: "172.16.40.2"
+    cd2_ip: "172.16.40.3"
 
   - id: 45
     name: "Guest_WiFi"
     subnet: "172.16.45.0/24"
-    purpose: "Unauthenticated 'Free' WiFi (Rate-limited)"
+    vip: "172.16.45.1"
+    cd1_ip: "172.16.45.2"
+    cd2_ip: "172.16.45.3"
 
   - id: 50
     name: "IOT_Building"
     subnet: "172.16.50.0/24"
-    purpose: "Security, HVAC, and smart book-drop sensors"
+    vip: "172.16.50.1"
+    cd1_ip: "172.16.50.2"
+    cd2_ip: "172.16.50.3"
