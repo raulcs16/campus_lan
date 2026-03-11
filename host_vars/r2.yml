@@ -2,13 +2,10 @@
 p2p_neighbor_ip: 172.16.0.2
 p2p_mask: 255.255.255.252
 
-# Links to CD1 (Using new subnets)
-r2_cd1_eth1_1_ip: 172.16.2.1
-r2_cd1_eth1_2_ip: 172.16.2.5
-
-# Links to CD2 (Using new subnets)
-r2_cd2_eth0_1_ip: 172.16.2.9
-r2_cd2_eth0_2_ip: 172.16.2.13
+cd1_l1_ip: 172.16.2.1
+cd1_l2_ip: 172.16.2.5
+cd2_l1_ip: 172.16.2.9
+cd2_l2_ip: 172.16.2.13
 
 # OSPF Configuration
 ospf_process_id: 1
