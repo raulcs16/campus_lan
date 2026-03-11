@@ -22,22 +22,15 @@
     - name: Configure Downlinks to CD Switches
       cisco.ios.ios_config:
         lines:
-          - interface Ethernet0/1
-          - description TO_CD1_Link1
-          - ip address {{ r1_cd1_eth0_1_ip }} 255.255.255.252
+          - description "{{ item.desc }}"
+          - ip address {{ item.ip }} 255.255.255.252
           - no shutdown
-          - interface Ethernet0/2
-          - description TO_CD1_Link2
-          - ip address {{ r1_cd1_eth0_2_ip }} 255.255.255.252
-          - no shutdown
-          - interface Ethernet1/1
-          - description TO_CD2_Link1
-          - ip address {{ r1_cd2_eth1_1_ip }} 255.255.255.252
-          - no shutdown
-          - interface Ethernet1/2
-          - description TO_CD2_Link2
-          - ip address {{ r1_cd2_eth1_2_ip }} 255.255.255.252
-          - no shutdown
+        parents: "interface {{ item.int }}"
+      loop:
+        - { int: "Ethernet0/1", desc: "TO_CD1_L1", ip: "{{ cd1_l1_ip }}" }
+        - { int: "Ethernet0/2", desc: "TO_CD1_L2", ip: "{{ cd1_l2_ip }}" }
+        - { int: "Ethernet1/1", desc: "TO_CD2_L1", ip: "{{ cd2_l1_ip }}" }
+        - { int: "Ethernet1/2", desc: "TO_CD2_L2", ip: "{{ cd2_l2_ip }}" }
 
     - name: Configure OSPF Routing
       cisco.ios.ios_config:
