@@ -1,6 +1,15 @@
 ---
 # South Lab - Public Desktops
 access_ports:
-  - { name: "Ethernet1/1", vlan: 30, desc: "LAB_DESKTOP_S01" }
-  - { name: "Ethernet1/2", vlan: 30, desc: "LAB_DESKTOP_S02" }
-  - { name: "Ethernet1/3", vlan: 30, desc: "LAB_DESKTOP_S03" }
+  - { port: "Ethernet1/0", vlan: 30, desc: "LabA_PC_01" }
+  - { port: "Ethernet1/1", vlan: 30, desc: "LabA_PC_02" }
+  - { port: "Ethernet1/2", vlan: 30, desc: "LabA_PC_03" }
+  - { port: "Ethernet1/3", vlan: 30, desc: "LabA_PC_04" }
+  - { port: "Ethernet2/0", vlan: 30, desc: "LabA_PC_05" }
+  - { port: "Ethernet2/1", vlan: 30, desc: "LabA_PC_06" }
+  - { port: "Ethernet2/2", vlan: 30, desc: "LabA_PC_07" }
+  - { port: "Ethernet2/3", vlan: 30, desc: "LabA_PC_08" }
+  - { port: "Ethernet3/0", vlan: 30, desc: "LabA_Network_Printer" }
+  - { port: "Ethernet3/1", vlan: 40, desc: "LabA_WiFi_AP" }
+  - { port: "Ethernet3/2", vlan: 50, desc: "LabA_Camera" }
+  - { port: "Ethernet3/3", vlan: 30, desc: "LabA_Teacher_Station" }

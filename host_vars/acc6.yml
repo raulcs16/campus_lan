@@ -1,6 +1,22 @@
 ---
 # Mechanical Room - IoT & Security
 access_ports:
-  - { name: "Ethernet1/1", vlan: 50, desc: "BUILDING_HVAC_SENS" }
-  - { name: "Ethernet1/2", vlan: 50, desc: "SECURITY_CAM_01" }
-  - { name: "Ethernet1/3", vlan: 50, desc: "SMART_BOOK_DROP" }
+  # Environmental Sensors (VLAN 50)
+  - { port: "Ethernet1/0", vlan: 50, desc: "Vault_Humidity_Sensor" }
+  - { port: "Ethernet1/1", vlan: 50, desc: "Vault_Temp_Sensor" }
+  - { port: "Ethernet1/2", vlan: 50, desc: "Main_Water_Leak_Detector" }
+  - { port: "Ethernet1/3", vlan: 50, desc: "Smoke_Detector_Ionization" }
+
+  # Physical Security & Access Control (VLAN 50)
+  - { port: "Ethernet2/0", vlan: 50, desc: "Vault_Biometric_Scanner" }
+  - { port: "Ethernet2/1", vlan: 50, desc: "Vault_Magnetic_Lock_Ctrl" }
+  - { port: "Ethernet2/2", vlan: 50, desc: "IP_Camera_Vault_Entrance" }
+  - { port: "Ethernet2/3", vlan: 50, desc: "IP_Camera_Vault_Interior" }
+
+  # Security Infrastructure (VLAN 25 - Static/Fixed)
+  - { port: "Ethernet3/0", vlan: 25, desc: "NVR_Security_Video_Recorder" }
+  - { port: "Ethernet3/1", vlan: 25, desc: "Security_Alarm_Panel" }
+
+  # Emergency Communications (VLAN 50)
+  - { port: "Ethernet3/2", vlan: 50, desc: "Emergency_Blue_Light_Phone" }
+  - { port: "Ethernet3/3", vlan: 50, desc: "Digital_Signage_Emergency_Alert" }

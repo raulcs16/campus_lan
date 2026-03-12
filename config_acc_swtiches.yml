@@ -30,6 +30,18 @@
         parents: "interface {{ item.name }}"
       loop: "{{ uplink_config }}"
 
+    - name: Configure Access Ports from Host Vars
+      cisco.ios.ios_config:
+        lines:
+          - description "{{ item.desc }}"
+          - switchport mode access
+          - switchport access vlan {{ item.vlan }}
+          - spanning-tree portfast
+          - spanning-tree bpduguard enable
+        parents: "interface {{ item.port }}"
+      loop: "{{ access_ports }}"
+      when: access_ports is defined
+
     - name: Save Configuration to NVRAM
       cisco.ios.ios_config:
         save_when: always

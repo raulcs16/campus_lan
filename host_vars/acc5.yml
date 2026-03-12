@@ -1,9 +1,15 @@
 ---
 # Lobby & Cafe - Public Wall Jacks & WiFi
 access_ports:
-  - { name: "Ethernet1/1", vlan: 35, desc: "CAFE_PLUG_IN_01" }
-  - { name: "Ethernet1/2", vlan: 35, desc: "CAFE_PLUG_IN_02" }
-
-# Special Trunk for the Wireless Access Point
-ap_trunks:
-  - { name: "Ethernet2/0", native: 10, allowed: "40,45", desc: "LOBBY_AP" }
+  - { port: "Ethernet1/0", vlan: 35, desc: "StudyRoom_1_Plugin" }
+  - { port: "Ethernet1/1", vlan: 35, desc: "StudyRoom_2_Plugin" }
+  - { port: "Ethernet1/2", vlan: 35, desc: "StudyRoom_3_Plugin" }
+  - { port: "Ethernet1/3", vlan: 35, desc: "StudyRoom_4_Plugin" }
+  - { port: "Ethernet2/0", vlan: 50, desc: "Main_HVAC_Controller" }
+  - { port: "Ethernet2/1", vlan: 50, desc: "Boiler_Room_Sensor" }
+  - { port: "Ethernet2/2", vlan: 50, desc: "Elevator_Emergency_IP_Phone" }
+  - { port: "Ethernet2/3", vlan: 50, desc: "Fire_Suppression_System" }
+  - { port: "Ethernet3/0", vlan: 40, desc: "Stack_Area_WiFi_AP_01" }
+  - { port: "Ethernet3/1", vlan: 40, desc: "Stack_Area_WiFi_AP_02" }
+  - { port: "Ethernet3/2", vlan: 50, desc: "Digital_Signage_Display_01" }
+  - { port: "Ethernet3/3", vlan: 50, desc: "Digital_Signage_Display_02" }

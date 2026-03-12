@@ -1,6 +1,15 @@
 ---
 # North Lab - Public Desktops
 access_ports:
-  - { name: "Ethernet1/1", vlan: 30, desc: "LAB_DESKTOP_N01" }
-  - { name: "Ethernet1/2", vlan: 30, desc: "LAB_DESKTOP_N02" }
-  - { name: "Ethernet1/3", vlan: 30, desc: "LAB_DESKTOP_N03" }
+  - { port: "Ethernet1/0", vlan: 30, desc: "LabB_PC_01" }
+  - { port: "Ethernet1/1", vlan: 30, desc: "LabB_PC_02" }
+  - { port: "Ethernet1/2", vlan: 30, desc: "LabB_PC_03" }
+  - { port: "Ethernet1/3", vlan: 30, desc: "LabB_PC_04" }
+  - { port: "Ethernet2/0", vlan: 30, desc: "LabB_PC_05" }
+  - { port: "Ethernet2/1", vlan: 30, desc: "LabB_PC_06" }
+  - { port: "Ethernet2/2", vlan: 30, desc: "Multimedia_Editing_Station" }
+  - { port: "Ethernet2/3", vlan: 30, desc: "Microfilm_Scanner_PC" }
+  - { port: "Ethernet3/0", vlan: 35, desc: "Media_Table_Plugin_1" }
+  - { port: "Ethernet3/1", vlan: 35, desc: "Media_Table_Plugin_2" }
+  - { port: "Ethernet3/2", vlan: 45, desc: "LabB_Guest_WiFi_AP" }
+  - { port: "Ethernet3/3", vlan: 50, desc: "LabB_Lighting_Controller" }

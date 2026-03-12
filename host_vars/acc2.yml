@@ -1,6 +1,15 @@
 ---
 # Circulation Desk - Registers & VOIP
 access_ports:
-  - { name: "Ethernet1/1", vlan: 25, desc: "CIRC_REG_01" }
-  - { name: "Ethernet1/2", vlan: 25, desc: "CIRC_REG_02" }
-  - { name: "Ethernet1/3", vlan: 25, desc: "CIRC_DESK_VOIP" }
+  - { port: "Ethernet1/0", vlan: 20, desc: "Circ_Desk_PC_01" }
+  - { port: "Ethernet1/1", vlan: 20, desc: "Circ_Desk_PC_02" }
+  - { port: "Ethernet1/2", vlan: 20, desc: "Circ_Desk_PC_03" }
+  - { port: "Ethernet1/3", vlan: 20, desc: "Circ_Staff_Printer" }
+  - { port: "Ethernet2/0", vlan: 40, desc: "Lobby_WiFi_AP_01" }
+  - { port: "Ethernet2/1", vlan: 45, desc: "Guest_WiFi_AP_01" }
+  - { port: "Ethernet2/2", vlan: 50, desc: "Security_Camera_Lobby" }
+  - { port: "Ethernet2/3", vlan: 50, desc: "Badge_Reader_Front" }
+  - { port: "Ethernet3/0", vlan: 30, desc: "OPAC_Catalog_Kiosk_01" }
+  - { port: "Ethernet3/1", vlan: 30, desc: "OPAC_Catalog_Kiosk_02" }
+  - { port: "Ethernet3/2", vlan: 35, desc: "Public_Charging_Station" }
+  - { port: "Ethernet3/3", vlan: 35, desc: "Public_Laptop_PlugIn" }
