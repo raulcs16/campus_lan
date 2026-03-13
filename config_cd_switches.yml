@@ -29,6 +29,15 @@
         - { int: "Ethernet1/1", desc: "TO_R2_L1", ip: "{{ r2_l1_ip }}" }
         - { int: "Ethernet1/2", desc: "TO_R2_L2", ip: "{{ r2_l2_ip }}" }
 
+    - name: Configure Cloud Bridge Port for Servers
+      cisco.ios.ios_config:
+        lines:
+          - description "LINK_TO_WINDOWS_SERVER_VIA_CLOUD"
+          - switchport mode access
+          - switchport access vlan 100
+          - no shutdown
+        parents: interface Ethernet3/3
+
     - name: Configure SVIs and HSRP
       cisco.ios.ios_config:
         lines:
