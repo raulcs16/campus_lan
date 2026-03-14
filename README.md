@@ -1,5 +1,7 @@
 # GNS3 Campus VLAN Network Lab
 
+![lab topology](topology.png "Topology")
+
 ## Project Overview
 
 This project demonstrates a robust, hierarchical campus network topology simulated within GNS3. The design focuses on Layer 2 and Layer 3 segmentation using VLANs to ensure scalability, security, and efficient broadcast domain management. The environment integrates Cisco IOU (IOS on Unix) images and utilizes a dedicated GNS3 VM for high-performance emulation.
