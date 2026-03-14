@@ -34,7 +34,7 @@
         lines:
           - description "LINK_TO_WINDOWS_SERVER_VIA_CLOUD"
           - switchport mode access
-          - switchport access vlan 100
+          - switchport access vlan 190
           - no shutdown
         parents: interface Ethernet3/3
 
