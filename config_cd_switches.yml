@@ -51,7 +51,6 @@
     - name: Configure OSPF
       cisco.ios.ios_config:
         lines:
-          - router ospf {{ ospf_process_id }}
           - router-id {{ router_id }}
           - network 172.16.0.0 0.0.255.255 area 0
           # This advertises all the user VLANs to the routers:
@@ -60,6 +59,7 @@
           - no passive-interface Ethernet0/2
           - no passive-interface Ethernet1/1
           - no passive-interface Ethernet1/2
+        parents: "router ospf {{ ospf_process_id }}"
 
     - name: Save Configuration
       cisco.ios.ios_command:
