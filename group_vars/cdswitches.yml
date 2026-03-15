@@ -1,9 +1,9 @@
 downlink_ports:
-  - { name: "Ethernet1/3", des:"TO_ACC1" }
-  - { name: "Ethernet2/0", des:"TO_ACC2" }
-  - { name: "Ethernet2/1", des:"TO_ACC3" }
-  - { name: "Ethernet2/2", des:"TO_ACC4" }
-  - { name: "Ethernet2/3", des:"TO_ACC5" }
-  - { name: "Ethernet3/0", des:"TO_ACC6" }
+  - { name: "Ethernet1/3", des: "TO_ACC1" }
+  - { name: "Ethernet2/0", des: "TO_ACC2" }
+  - { name: "Ethernet2/1", des: "TO_ACC3" }
+  - { name: "Ethernet2/2", des: "TO_ACC4" }
+  - { name: "Ethernet2/3", des: "TO_ACC5" }
+  - { name: "Ethernet3/0", des: "TO_ACC6" }
 
 peer_link: "Ethernet1/0"
