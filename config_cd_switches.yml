@@ -41,6 +41,8 @@
     - name: Configure P2P Link between CD1 and CD2
       cisco.ios.ios_config:
         lines:
+          - no switchport
+          - description "P2P Link"
           - ip address {{ p2p_neighbor_ip }} {{ p2p_mask }}
           - no shutdown
         parents: interface Ethernet1/0
