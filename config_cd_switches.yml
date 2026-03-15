@@ -42,6 +42,7 @@
       cisco.ios.ios_config:
         lines:
           - description "L2_PEER_LINK_FOR_HSRP_AND_VLAN_SYNC"
+          - switchport
           - switchport trunk encapsulation dot1q # Required on some older IOS/models
           - switchport mode trunk
           - switchport trunk allowed vlan all # Or specify your campus_vlans
