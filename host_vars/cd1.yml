@@ -11,3 +11,6 @@ hsrp_priority: 110 # CD1 as Primary
 hsrp_offset: 2 # SVI will be .2
 ospf_process_id: 1
 router_id: 10.10.10.1
+
+p2p_neighbor_ip: 172.16.0.11 # To CD2
+p2p_mask: 255.255.255.252
