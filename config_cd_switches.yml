@@ -59,6 +59,15 @@
         parents: "interface Vlan{{ item.id }}"
       loop: "{{ campus_vlans }}"
 
+    - name: Configure DHCP Relay (IP Helper)
+      cisco.ios.ios_config:
+        parents: "interface Vlan{{ item.id }}"
+        lines:
+          - "ip helper-address 192.168.190.145"
+      loop: "{{ campus_vlans }}"
+      # Skip Vlan 190 (Server Local) and Vlan 10 (Static/Management)
+      when: item.id not in [190, 10]
+
     - name: Configure OSPF
       cisco.ios.ios_config:
         lines:
