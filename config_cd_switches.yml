@@ -41,9 +41,10 @@
     - name: Configure P2P Link between CD1 and CD2
       cisco.ios.ios_config:
         lines:
-          - no switchport
-          - description "P2P Link"
-          - ip address {{ p2p_neighbor_ip }} {{ p2p_mask }}
+          - description "L2_PEER_LINK_FOR_HSRP_AND_VLAN_SYNC"
+          - switchport trunk encapsulation dot1q # Required on some older IOS/models
+          - switchport mode trunk
+          - switchport trunk allowed vlan all # Or specify your campus_vlans
           - no shutdown
         parents: interface Ethernet1/0
 
