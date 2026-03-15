@@ -49,6 +49,18 @@
           - no shutdown
         parents: interface Ethernet1/0
 
+    - name: Configure Downlink Trunks to Access Switches
+      cisco.ios.ios_config:
+        parents: "interface {{ item.name }}"
+        lines:
+          - description "{{ item.des }}"
+          - switchport
+          - switchport trunk encapsulation dot1q
+          - switchport mode trunk
+          - switchport trunk allowed vlan all
+          - no shutdown
+      loop: "{{ downlink_ports }}"
+
     - name: Configure SVIs and HSRP
       cisco.ios.ios_config:
         lines:
