@@ -12,5 +12,5 @@ hsrp_offset: 3 # SVI will be .3
 ospf_process_id: 1
 router_id: 10.10.10.2
 
-p2p_neighbor_ip: 172.16.0.12 # To CD1
+p2p_neighbor_ip: 172.16.0.14 # To CD1
 p2p_mask: 255.255.255.252
